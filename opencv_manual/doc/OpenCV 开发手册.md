@@ -17,7 +17,7 @@
 
 - OpenCV（开源计算机视觉库：<http://opencv.org> ）是BSD许可的开源库，由加里·布拉德斯基 (Gray Bradsky) 于 1999 年创立，第一版于2000年问世。它轻量级而且高效——由一系列 C 函数和少量 C++ 类构成，可以运行在 Linux、Windows 和 Mac OS 操作系统上，同时又提供了 Python、Ruby、MATLAB 等语言的接口，实现了图像处理和计算机视觉方面的很多通用算法。
 最新版本是 4.1.2 ，2019 年 10 月发布。
-- OpenCV目前的应用领域
+- OpenCV目前的应用领域  
 ![OpenCV Application Area](./doc_image/opencv_application.png)
 
 ### 1.2 OpenCV-Python 简介
@@ -38,7 +38,7 @@
 Anaconda 是一个开源的 Python 发行版本，其包含了 conda、Python 等180多个科学包及其依赖项。通过安装 Anaconda ，能够大量减少配置 Python 环境的时间，减少许多不必要的麻烦。
 
 - 下载 Anaconda
-进入Anaconda官方网站 <https://www.anaconda.com/distribution> 下载相对的版本。  
+进入Anaconda官方网站 <https://www.anaconda.com/distribution> 下载相对的版本。    
 ![anncoda web](./doc_image/anaconda.png)  
 选择 Python3.7 , 64 位版下载。  
 - 安装 Anaconda  
@@ -265,31 +265,30 @@ cv.destroyAllWindows()      # 摧毁所有创建的窗口
 
 - 它与从摄像机捕获相同，只是摄像机索引更换为视频名称。在播放帧的时候，应选取适当的 cv.waitKey() 参数。如果参数过小，视频播放速度将会变得很快；参数过大，视频播放速度会变慢（这就是您可以慢动作显示视频的方式）。正常情况下25就可以了。
 - 代码演示：
+代码：(test_2_6_play_video.py)  
 
-代码：(test_2_6_play_video.py)
+    ```python
+    import numpy as np
+    import cv2 as cv
 
-```python
-import numpy as np
-import cv2 as cv
+    # 创建 VideoCapture 类
+    cap = cv.VideoCapture("./opencv_manual/test_video/vtest.avi")  
 
-# 创建 VideoCapture 类
-cap = cv.VideoCapture("./opencv_manual/test_video/vtest.avi")  
+    while cap.isOpened():       # 视频播放完毕，退出循环
+        ret, frame = cap.read()     # 读取视频数据
 
-while cap.isOpened():       # 视频播放完毕，退出循环
-    ret, frame = cap.read()     # 读取视频数据
+        if not ret:                 # 读取数据出错
+            print("视频解析失败，退出中 ...")
+            break
 
-    if not ret:                 # 读取数据出错
-        print("视频解析失败，退出中 ...")
-        break
+        gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
-    gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-
-    cv.imshow("frame", gray)    # 显示图片
-    if cv.waitKey(25) == ord('q'):   # 控制播放速度，按 Q 键退出
-        break
-cap.release()       # 关闭视频
-cv.destroyAllWindows()  # 摧毁所有创建的窗口
-```
+        cv.imshow("frame", gray)    # 显示图片
+        if cv.waitKey(25) == ord('q'):   # 控制播放速度，按 Q 键退出
+            break
+    cap.release()       # 关闭视频
+    cv.destroyAllWindows()  # 摧毁所有创建的窗口
+    ```
 
 - 注意
 确保安装了正确版本的 ffmpeg 或 gstreamer 。有时，使用 Video Capture 不能成功，主要是由于 ffmpeg / gstreamer 安装错误。
@@ -299,43 +298,43 @@ cv.destroyAllWindows()  # 摧毁所有创建的窗口
 - 对于保存图片，非常简单，仅仅使用 cv.imwrite() 就可以了。但对于保存视频来说，则需要做更多的工作。
 - 在保存视频的时候，我们应该创建一个 VideoWriter 对象。在创建 VideoWriter 对象时，传入的参数有：输出文件名，指定 FourCC 编码，fps( frames per second 每秒的帧数) ，帧大小以及 isColor flag 标志。如果 isColor 为 True ，编码器使用彩色框，否则将与灰度框一起使用。  
 - FourCC 是一个 4 字节的代码，用于指定视频编解码器。在<http://fourcc.org> 网站上，你可以找到可用的代码列表。它取决于平台。遵循编解码器对保存视频来说效果很好。
-  - 在 Fedora 上：DIVX, XVID, MJPG, X264, WMV1, WMV2 
+  - 在 Fedora 上：DIVX, XVID, MJPG, X264, WMV1, WMV2
   - 在 Windows 上：DIVX
   - 在 OSX 上：MJPG (.mp4), DIVX (.avi), X264 (.mkv)
 - 对于 MJPG ，FourCC 代码以 cv.VideoWriter_fourcc('M','J','P','G') 或 cv.VideoWriter_fourcc(*'MJPG') 的形式传递。
 - 代码演示：
 代码：(test_2_7_save_video.py)
 
-```python
-import numpy as np
-import cv2 as cv
+    ```python
+    import numpy as np
+    import cv2 as cv
 
-cap = cv.VideoCapture(0)        # 打开相机
+    cap = cv.VideoCapture(0)        # 打开相机
 
-fourcc = cv.VideoWriter_fourcc(*'XVID')     # 定义编码对象
-# 创建 VideoWriter 对象
-out = cv.VideoWriter("output.avi", fourcc, 20.0 ,(640, 480))
+    fourcc = cv.VideoWriter_fourcc(*'XVID')     # 定义编码对象
+    # 创建 VideoWriter 对象
+    out = cv.VideoWriter("output.avi", fourcc, 20.0 ,(640, 480))
 
-while cap.isOpened():
-    ret, frame = cap.read() # 读取帧
+    while cap.isOpened():
+        ret, frame = cap.read() # 读取帧
 
-    if not ret:         # 帧的读取结果有误
-        print("不能接受数据帧。退出中 ...")
-        exit
+        if not ret:         # 帧的读取结果有误
+            print("不能接受数据帧。退出中 ...")
+            exit
 
-    out.write(frame)        # 写入帧
+        out.write(frame)        # 写入帧
 
-    cv.imshow("frame", frame)   # 显示图像
+        cv.imshow("frame", frame)   # 显示图像
 
-    if cv.waitKey(1) == ord('q'):   # 按 Q 退出
-        break
+        if cv.waitKey(1) == ord('q'):   # 按 Q 退出
+            break
 
-# 工作完成后，释放所有内容
-cap.release()
-out.release()
+    # 工作完成后，释放所有内容
+    cap.release()
+    out.release()
 
-cv.destroyAllWindows()  # 摧毁窗口
-```
+    cv.destroyAllWindows()  # 摧毁窗口
+    ```
 
 #### 2.2.3 OpenCV 中的绘图功能
 
@@ -347,34 +346,170 @@ cv.destroyAllWindows()  # 摧毁窗口
 (2) 参数
 在上述的函数中，你将看到一些常见的参数，如下所示：
 
-- img : 您要绘制形状的图像
+- img : 要添加图像的图片
 - color : 形状的颜色。对于 BGR 图像而言，以元组的方式传递，如蓝色 (255, 0, 0) 。对于灰度图而言，仅仅传递灰度值就可以了。
 - thickness : 线或圆等图形的粗细。如果对于封闭的图像（如圆）其thickness值为 -1 ，它将填充形状。默认值为 1 。
 - lineType ：线的类型， 是否为 8-connected, anti-aliased 线等等。默认为 8-connected。
   
 (3) 画线
 
-- 要绘制一条线，你需要传递线的开始和结束坐标。
+- 要绘制一条线，你需要确定线的开始和结束坐标。
 - 我们先创建一幅黑色背景图，然后在其左上角到右下角绘制一条蓝线。
 - 代码演示：
-代码：(test_9_drawing_line.py)
+代码：(test_2_8_draw_line.py)
 
-```python
-import cv2 as cv
-import numpy as np
+    ```python
+    import cv2 as cv
+    import numpy as np
 
-img = np.zeros((512, 512, 3), dtype=np.uint8)  # 创建黑色背景图
-cv.imshow("img", img)   # 显示原图
+    img = np.zeros((512, 512, 3), dtype=np.uint8)  # 创建黑色背景图
+    cv.imshow("img", img)   # 显示原图
 
-result = cv.line(img, (0 ,0), (511, 511), (0, 255, 0), 1)   # 在背景图上绘制线条
-cv.imshow("result", result)         # 显示处理结果图
+    result = cv.line(img, (0 ,0), (511, 511), (0, 255, 0), 1)   # 在背景图上绘制线条
+    cv.imshow("result", result)         # 显示处理结果图
 
-cv.waitKey(0)       # 等待按键
-cv.destroyAllWindows()  # 摧毁窗口
-```
+    cv.waitKey(0)       # 等待按键
+    cv.destroyAllWindows()  # 摧毁窗口
+    ```
 
 运行结果：  
-![test_9_drawing_line.py](https://github.com/WanglinLi595/Save_Markdown_Picture/blob/master/OpenCV%E5%87%BD%E6%95%B0%E6%98%BE%E7%A4%BA/test_9_darwing_line.png?raw=true)
+![test_2_8_draw_line.py](./doc_image/test_2_8_draw_line.png)
+
+(4) 画矩形框
+
+- 要绘制矩形，你需要矩形确定左上角和右下角的坐标  
+- 代码演示：(test_2_9_drawing_rectangle.py)
+
+```python
+import numpy as np
+import cv2 as cv
+
+# 创建一个黑色图框
+img = np.zeros((512,512,3), np.uint8)
+
+# 绘制一个蓝色的矩形框
+cv.rectangle(img, (100, 100), (200, 200), (255, 0, 0), -1)
+
+cv.imshow("rectangle", img)         # 显示图片
+
+cv.waitKey(0)
+
+cv.destroyAllWindows()
+```
+
+运行结果：
+![test_2_9_draw_rectangle](./doc_image/test_2_9_draw_rectangle.png)
+
+(5) 绘制圆形
+
+- 绘制圆形需要确定圆心点的位置和半径
+- 代码演示：(test_2_10_draw_circle.py)
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+
+    # 创建一个黑色图框
+    img = np.zeros((512,512,3), np.uint8)
+
+    # 绘制一个红色的圆
+    cv.circle(img, (447,63), 63, (0,0,255), -1)
+
+    cv.imshow("circle", img)         # 显示图片
+
+    cv.waitKey(0)
+
+    cv.destroyAllWindows()
+    ```
+
+运行结果：
+![test_2_10_draw_circle](./doc_image/test_2_10_draw_circle.png)
+
+(5) 绘制椭圆
+
+- 为了绘制椭圆，我们需要通过一系类的参数。首先我们需要确定椭圆中心坐标 (x, y) ，然后确定椭圆的轴长度（长轴长，短轴长），再确定椭圆在逆时针方向旋转的角度，最后确定起始角和结束角（起始角和结束角表示从长轴沿顺时针方向测量的椭圆弧的开始和结束。例如，给定0和360表示整个椭圆）
+- 代码演示
+代码：（test_2_11_draw_ellipse.py）
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+
+    # 确定两个背景板，形成对比
+    ellipse_1 = np.zeros((512,512,3), np.uint8)
+    ellipse_2 = np.zeros((512,512,3), np.uint8)
+
+    # 两者的起始角不同，一个为 0° ，一个为 90°
+    cv.ellipse(ellipse_1, (256,256), (100,50), 0, 0, 360, 255, -1)
+    cv.ellipse(ellipse_2, (256,256), (100,50), 0, 90, 360, 255, -1)
+
+    # 显示图像
+    cv.imshow("ellipse_1", ellipse_1)
+    cv.imshow("ellipse_2", ellipse_2)
+
+    cv.waitKey()
+
+    cv.destroyAllWindows()
+    ```
+
+运行结果：
+![test_2_11_draw_ellipse](./doc_image/test_2_11_draw_ellipse.png)
+
+(6) 绘制多边形
+
+- 要绘制多边形，我们需要确定各个顶点的位置，然后将各个顶点的位置变成 Rows * 1 * 2 的形状, Rows 是顶点的数目，其中数据类型要为 int32
+- 代码演示:（test_2_12_draw_polygon）
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+
+    # 确定两个背景板，形成对比
+    img = np.zeros((512,512,3), np.uint8)
+
+    # 确定 4 个点，四个点按照顺序连接成一个封闭图形
+    pts = np.array([[50,15],[120,30],[170,50],[30,100]], np.int32)
+    pts = pts.reshape((-1,1,2))         # 改变顶点 shape
+    cv.polylines(img, [pts], True, (0,0,255))
+
+    cv.imshow("polygon", img)
+
+    cv.waitKey(0)
+    cv.destroyAllWindows()
+    ```
+
+运行结果
+![test_2_12_draw_polygon](./doc_image/test_2_12_draw_polygon.png)
+
+(7) 添加文本
+
+- 在添加文本的时候，需要指定下列参数：
+  - 要添加的文本（不支持中文）
+  - 文本的位置
+  - 字体类型
+  - 字体大小
+- 字体类型请查看：[字体类型](https://docs.opencv.org/4.2.0/d6/d6e/group__imgproc__draw.html#ga0f9314ea6e35f99bb23f29567fc16e11)
+- 代码演示(test_2_13_puttext.py)
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+
+    img = np.zeros((512,512,3), np.uint8)
+
+    font = cv.FONT_HERSHEY_SIMPLEX  # 确定字体类型
+    cv.putText(img, 'OpenCV', (10,400), font, 4, (255,255,255), 2 , cv.LINE_AA)
+
+    cv.imshow("text", img)      # 图片显示
+
+    cv.waitKey(0)
+    cv.destroyAllWindows()
+    ```
+运行结果：
+![test_2_13_puttext](./doc_image/test_2_13_puttext.png)
 
 ## 三. OpenCV 进阶篇
 
