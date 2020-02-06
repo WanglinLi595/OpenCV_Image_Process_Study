@@ -1,1 +1,13 @@
-# OpenCV_Image_Process_Study
+<!--
+ * @描述: README.md
+ * @版本: V1_0
+ * @作者: LiWanglin
+ * @创建时间: 2020.02.06
+ * @最后编辑人: LiWanglin
+ * @最后编辑时间: 2020.02.06
+ -->
+
+# OpenCV 图像处理研究
+
+
+
