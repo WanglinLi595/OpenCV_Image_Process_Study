@@ -1,6 +1,16 @@
 #!/usr/bin/env python
 # coding=utf-8
 '''
+@描述: 
+@版本: V1_0
+@作者: LiWanglin
+@创建时间: Do not edit
+@最后编辑人: LiWanglin
+@最后编辑时间: Do not Edit
+'''
+#!/usr/bin/env python
+# coding=utf-8
+'''
 @描述: 为图片添加边框
 @版本: V1_0
 @作者: LiWanglin
@@ -14,7 +24,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 # 读取图片
-img1 = cv.imread("./opencv_manual/test_image/opencv-logo.png")
+img1 = cv.imread("./opencv_manual/test_image/OpenCVLogo.jpg")
 
 # 为图片添加不同类型的边框
 replicate = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_REPLICATE)

@@ -631,7 +631,7 @@ cv.split() 会花费大量的时间，所以只有你需要用到的时候才去
     from matplotlib import pyplot as plt
 
     # 读取图片
-    img1 = cv.imread("./opencv_manual/test_image/opencv-logo.png")
+    img1 = cv.imread("./opencv_manual/test_image/OpenCVLogo.jpg")
 
     # 为图片添加不同类型的边框
     replicate = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_REPLICATE)
@@ -651,9 +651,87 @@ cv.split() 会花费大量的时间，所以只有你需要用到的时候才去
     plt.show()
     ```
 
-运行结果：
-![test_3_1_image_border](./doc_image/test_3_1_image_border.png)  
+    运行结果：
+    ![test_3_1_image_border](./doc_image/test_3_1_image_border.png)  
 注意：在使用 Matplotlib，颜色通道发生了改变。
+
+#### 3.1.2 图像的算术运算
+
+(1) 目标
+
+- 学习一系类的图片算术运算，包括加，减，按位操作等等。
+- 学习函数： cv.add(), cv.addWeighted() 等
+
+(2) 图片相加
+
+- 你可以使用 OpenCV 的 cv.add() 函数，也可是使用 Numpy 直接进行相加：res = img1 + img2 。两幅图片的深度和类型应该相同。
+- 注意：
+cv.add() 是一个饱和运算，而 Numpy 的加法是一个取模运算。
+- 请看以下实例：
+
+    ```python
+    >>> x = np.uint8([122])
+    >>> y = np.uint8([178])
+    >>> print(x + y)        # 122 + 178 = 300 % 256 => 44
+    [44]
+    >>> print(cv.add(x, y))     # 122 + 178 = 300 => 255
+    [[255]]
+    ```
+
+(3) 图像混合
+
+- 这也是一种图片相加，但是为了体现图片混合或是图片透明的效果，不同的图片被给予不同的权重。图片混合按照以下公式：
+  
+```math
+g(x) = (1 - \alpha)f_0(x) + \alpha f_1(x)
+```
+
+- 通过从 0 $\rightarrow$ 1 改变 $\alpha$ ，可以在一个图像到另一个图像之间执行冷转换。
+- 代码演示：
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    # 读取图片
+    img1 = cv.imread("./opencv_manual/test_image/boat.bmp")
+    img2 = cv.imread("./opencv_manual/test_image/dollar.bmp")
+
+    # 图片按照不同的权重进行相加
+    dst = cv.addWeighted(img1, 0.8, img2, 0.2, 0)
+
+    # 显示图片
+    plt.subplot(131),plt.imshow(img1,'gray'),plt.title('img1')
+    plt.subplot(132),plt.imshow(img2,'gray'),plt.title('img2')
+    plt.subplot(133),plt.imshow(dst,'gray'),plt.title('dst')
+    plt.show()
+
+    cv.waitKey(0)
+    cv.destroyAllWindows()
+    ```
+
+    运行结果：
+    ![test_3_2_image_blend](./doc_image/test_3_2_image_blend.png)
+
+- 其中 cv.addWeighted() 函数的公式为：
+
+```math
+dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
+```
+
+(4) 按位运算
+
+- 按位运算包括按位与，按位或，按位非以及按位异或运算。在提取图像的任何部分、定义以及使用非矩形 ROI 等时，它们将发挥重大作用。
+- 代码演示：（test_3_2_bitwise.py）
+代码：
+
+    ```python
+    ```
+
+    运行结果：
+
 
 ### 3.2 OpenCV 图像处理
 
