@@ -114,7 +114,7 @@ cv.destroyAllWindows()  # 摧毁所有显示图片的窗口
 
 ### 2.2 OpenCV 入门函数讲解
 
-- 本小节主要讲述基本的 OpenCV 函数使用，包括简单的图片操作，简单的视频操操作 ，画图功能以及处理鼠标事件。
+- 本小节主要讲述基本的 OpenCV 函数使用，包括简单的图片操作，简单的视频操操作以及画图功能。
 
 #### 2.2.1 简单的图片操作
 
@@ -508,12 +508,152 @@ cv.destroyAllWindows()
     cv.waitKey(0)
     cv.destroyAllWindows()
     ```
+
 运行结果：
 ![test_2_13_puttext](./doc_image/test_2_13_puttext.png)
 
 ## 三. OpenCV 进阶篇
 
+- 本节主要学习 OpenCV 中一些比较重要的操作，包括 OpenCV 核心操作和 OpenCV 图像处理。
+
 ### 3.1 OpenCV 核心操作
+
+#### 3.1.1 基本的图片操作
+
+(1) 目标
+
+- 访问像素值并且修改他们
+- 访问图片属性
+- 设置 ROI
+- 合并和分离图片
+
+(2) 访问和修改像素值
+
+- 首先载入一张图片
+  
+    ```python
+    >>> import numpy as np
+    >>> import cv2 as cv
+    >>> img = cv.imread('./opencv_manual/test_image/lenacolor.png')
+    ```
+
+- 然后可以通过行和列坐标访问像素值。对于 BGR 图片，返回值为一个 B ，G ，R 值矩阵。对于灰度图片，则返回相应的灰度值。
+  
+    ```python
+    >>> px = img[100,100]
+    >>> print( px )
+    [ 78  68 178]
+
+    # 仅访问一个 blue 像素
+    >>> blue = img[100,100,0]
+    >>> print(blue)
+    78
+    ```
+
+- 通过相同的方式，你可以修改像素值
+
+    ```python
+    >>> img[100,100] = [255,255,255]
+    >>> print(img[100, 100])
+    [255 255 255]
+    ```
+
+- 警告
+Numpy 是一个用于快速数组计算的优化库。因此，简单地访问每个像素值并修改它将非常缓慢，这是不可取的。
+
+(3) 获取图片属性
+
+- 图片属性包括图片的行数，列数和通道数，图片数据的类型以及像素数等等。
+- 通过 img.shape 获取的形状。它将返回图片的行数，列数以及通道数（如果为彩色图片）。
+
+    ```python
+    >>> print(img.shape)
+    (512, 512, 3)
+    ```
+
+- 通过 img.size 获取图片的像素数目。
+
+    ```python
+    >>> print(img.size)
+    786432
+    ```
+
+- 通过 img.dtype 获取图片数据类型
+  
+    ```python
+    >>> print(img.dtype)
+    uint8
+    ```
+
+(4) 分离图像通道
+
+- 有时候，我们为了工作需求必须分离图片的 B，G，R 通道。在这种情况下，你需使用 cv.split() 函数将 BGR 图片转变成单通道。
+  
+    ```python
+    >>> b, g, r = cv.split(img)
+    >>> print("b shape is", b.shape, "\ng shape is", g.shape, "\nr shape is", r.shape)
+    b shape is (512, 512)
+    g shape is (512, 512)
+    r shape is (512, 512)
+    ```
+
+- 也可以使用 numpy 操作
+  
+    ```python
+    >>> b = img[:,:,0]
+    >>> print("b shape is",b.shape)
+    b shape is (512, 512)
+    ```
+
+- 注意
+cv.split() 会花费大量的时间，所以只有你需要用到的时候才去使用。最好用 numpy 索引。
+
+(5) 为图像制作边框
+
+- 如果你想为图片制作边框，你可以使用 cv.copyMakeBorder() 函数。
+- 它的主要参数有：
+  - src : 输入图像
+  - top, bottom, left, right : 在指定边缘的像素点宽度
+  - borderType : 想要添加的边缘类型。它有下列类型：
+    - cv.BORDER_CONSTANT : 添加一个固定颜色的边框
+    - cv.BORDER_REFLECT ：边界将是边界元素的镜像反射
+    - cv.BORDER_REFLECT_101 or cv.BORDER_DEFAULT : 与上面相同，仅有稍微不同
+    - cv.BORDER_REPLICATE :最后一个像素点将被复制
+    - cv.BORDER_WRA
+  - value : 边界颜色，如果边界类型为 cv.BORDER_CONSTANT，则需用到。
+
+- 代码演示：（test_3_1_image_border.py）
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    # 读取图片
+    img1 = cv.imread("./opencv_manual/test_image/opencv-logo.png")
+
+    # 为图片添加不同类型的边框
+    replicate = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_REPLICATE)
+    reflect = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_REFLECT)
+    reflect101 = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_REFLECT_101)
+    wrap = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_WRAP)
+    BLUE = [255,0,0]
+    constant= cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_CONSTANT,value=BLUE)
+
+    # 显示不同类型的边框图片
+    plt.subplot(231),plt.imshow(img1,'gray'),plt.title('ORIGINAL')
+    plt.subplot(232),plt.imshow(replicate,'gray'),plt.title('REPLICATE')
+    plt.subplot(233),plt.imshow(reflect,'gray'),plt.title('REFLECT')
+    plt.subplot(234),plt.imshow(reflect101,'gray'),plt.title('REFLECT_101')
+    plt.subplot(235),plt.imshow(wrap,'gray'),plt.title('WRAP')
+    plt.subplot(236),plt.imshow(constant,'gray'),plt.title('CONSTANT')
+    plt.show()
+    ```
+
+运行结果：
+![test_3_1_image_border](./doc_image/test_3_1_image_border.png)  
+注意：在使用 Matplotlib，颜色通道发生了改变。
 
 ### 3.2 OpenCV 图像处理
 
