@@ -732,8 +732,68 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
 
     运行结果：
 
+#### 3.1.3 性能测量
+
+(1) 目标
+
+- 衡量代码的性能
+- 学习函数 : cv.getTickCount(), cv.getTickFrequency()
+
+(2) 用 OpenCV 来测量性能
+
+- cv.getTickCount() 函数用于返回从操作系统启动到当前所经的计时周期数。
+- cv.getTickFrequency() 用于返回CPU的频率。
+- 代码演示( test_3_4_measuring_performance.py)
+代码：
+
+    ```
+    import cv2 as cv
+
+    # 获取运行前的时间戳
+    start_tick = cv.getTickCount()
+
+    # 从 0 加到 1000
+    for i in range(1001):
+        y += i
+
+    # 获取运行后的时间戳
+    end_tick = cv.getTickCount()
+
+    # 打印 CPU 频率
+    print("TickFrequency :", cv.getTickFrequency())
+
+    # 打印从 0 加到 1000 所用的时间
+    print((end_tick - start_tick)/cv.getTickFrequency())
+    ```
+
+    运行结果
+
+    ```python
+    TickFrequency : 10000000.0
+    0.000114
+    ```
 
 ### 3.2 OpenCV 图像处理
+
+- 本小节你将学习到 OpenCV 中许多的图像处理函数
+
+#### 3.2.1 改变色彩空间
+
+(1) 目标
+
+- 学习怎样从一个色彩空间转换到另一个色彩空间，向从 BGR $\leftrightarrow$ RGB , BGR $\leftrightarrow$ HSV 等。
+- 创建一个应用程序提取视频中的彩色对象。
+- 学习函数： cv.cvtColor(), cv.inRange() 等。
+
+(2) 改变色彩空间
+
+- 在 OpenCV 中，有超过 150 多种色彩空间转变的方法。但是，我们今天只讲两种最常用的色彩空间转换，BGR $\leftrightarrow$ Gray , BGR $\leftrightarrow$ HSV 。
+- 对于色彩空间转换，我们使用  cv.cvtColor(input_image, flag) 函数。其中 flag 决定转换的类型。从 BGR $\rightarrow$ Gray 的 flag 是 cv.COLOR_BGR2GRAY ，从 BGR $\rightarrow$ HSV 的 flag 是  cv.COLOR_BGR2HSV 。
+
+(3) 目标跟踪
+
+- 在学会 BGR $\leftrightarrow$ HSV 后，我们就可以使用它去提取色彩目标。
+
 
 ## 四. OpenCV 高级篇
 
