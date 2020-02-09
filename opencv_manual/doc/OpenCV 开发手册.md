@@ -783,7 +783,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
 
 - 学习怎样从一个色彩空间转换到另一个色彩空间，向从 BGR $\leftrightarrow$ RGB , BGR $\leftrightarrow$ HSV 等。
 - 创建一个应用程序提取视频中的彩色对象。
-- 学习函数： cv.cvtColor(), cv.inRange() 等。
+- 学习函数：cv.cvtColor(), cv.inRange() 等。
 
 (2) 改变色彩空间
 
@@ -792,7 +792,93 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
 
 (3) 目标跟踪
 
-- 在学会 BGR $\leftrightarrow$ HSV 后，我们就可以使用它去提取色彩目标。
+- 在学会 BGR $\rightarrow$ HSV 后，我们就可以使用它去提取色彩目标。在 HSV 中，比在 BGR 确定颜色更容易。在我们的应用程序中，我们将会去捕捉蓝色目标。
+- 应用程序方法步骤：
+    1. 提取视频的每一帧
+    2. 从 BGR 色彩空间转换到 HSV 色彩空间
+    3. 在 HSV 图像中设为蓝色范围为阈值
+    4. 然后提取蓝色物体
+- 代码演示：（test_3_5_colored_tracking.py）
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+
+    cap = cv.VideoCapture(0)
+
+    while(1):
+    # 提取每一帧
+    _, frame = cap.read()
+    # 色彩空间转换
+    hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+    # 设定在 HSV 中蓝色的取值范围
+    lower_blue = np.array([110,50,50])
+    upper_blue = np.array([130,255,255])
+    # 进行二值化处理
+    mask = cv.inRange(hsv, lower_blue, upper_blue)
+    # 按位运算，得到蓝色区域
+    res = cv.bitwise_and(frame,frame, mask= mask)
+    cv.imshow('frame',frame)
+    cv.imshow('mask',mask)
+    cv.imshow('res',res)
+    k = cv.waitKey(5) & 0xFF
+    if k == 27:
+        break
+    cv.destroyAllWindows()
+    ```
+
+#### 3.2.2 图像的几何变换
+
+(1) 目标
+
+- 学会使用不同的图片几何变换，比如翻转，旋转，仿射变换等。
+- 学习函数：cv.getPerspectiveTransform()
+
+(2) 转换
+
+- OpenCV 提供两个翻转函数，cv.warpAffine() 和 cv.warpPerspective() ，使用它们可以执行各种翻转。
+- cv.warpAffine() 采用 2 * 3 的输入转换矩阵
+- cv.warpPerspective() 采用 3 * 3 的输入转换矩阵。
+
+(3) 缩放
+
+- 缩放只是改变图像的尺寸。OpenCV 使用 cv.resize() 来实现图片缩放。
+- 代码演示(test_3_6_image_resize.py)
+代码：
+
+    ```python
+    import numpy as np
+    import cv2 as cv
+    img = cv.imread('./opencv_manual/test_image/messi5.jpg')
+    # 图片扩大两倍
+    res = cv.resize(img,None,fx=2, fy=2, interpolation = cv.INTER_CUBIC)
+
+    cv.imshow("original", img)
+    cv.imshow("res", res)
+
+    cv.waitKey(0)
+    cv.destroyAllWindows()
+    ```
+
+(4) 转动
+
+- 转动时目标位置的移动。
+- 代码演示
+代码：
+
+    ```python
+    import numpy as np
+    import cv2 as cv
+    img = cv.imread('./opencv_manual/test_image/messi5.jpg',0)
+    rows,cols = img.shape
+    M = np.float32([[1,0,100],[0,1,50]])
+    dst = cv.warpAffine(img,M,(cols,rows))
+    cv.imshow('img',dst)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
+    ```
+
 
 
 ## 四. OpenCV 高级篇
