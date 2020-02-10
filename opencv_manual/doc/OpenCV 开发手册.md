@@ -835,7 +835,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
 - 学会使用不同的图片几何变换，比如翻转，旋转，仿射变换等。
 - 学习函数：cv.getPerspectiveTransform()
 
-(2) 转换
+(2) 变幻操作
 
 - OpenCV 提供两个翻转函数，cv.warpAffine() 和 cv.warpPerspective() ，使用它们可以执行各种翻转。
 - cv.warpAffine() 采用 2 * 3 的输入转换矩阵
@@ -863,7 +863,17 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
 
 (4) 转动
 
-- 转动时目标位置的移动。
+- 转动是物体位置的转移。如果你想要点 (x, y) 变成 ($t_x$, $t_y$。你先需创建一个矩阵：
+
+```math
+ \begin{bmatrix}
+    1 & 0 & t_x \\
+    0 & 1 & t_y \\
+\end{bmatrix}
+```
+
+- 然后使用 cv.warpAffine() 函数。
+
 - 代码演示
 代码：
 
@@ -878,6 +888,110 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     cv.waitKey(0)
     cv.destroyAllWindows()
     ```
+
+(5) 旋转
+
+- 图像的旋转是通过矩阵
+
+```math
+\begin  {bmatrix}
+        cos\theta & -sin\theta \\
+        sin\theta & cos\theta  \\
+\end    {bmatrix}
+```
+
+来实现的。
+
+- 代码演示：(test_3_8_rotation.py)
+代码
+
+    ```python
+    import cv2 as cv
+
+    img = cv.imread('./opencv_manual/test_image/messi5.jpg',0)
+    rows,cols = img.shape
+    # cols-1 and rows-1 are the coordinate limits.
+    M = cv.getRotationMatrix2D(((cols-1)/2.0,(rows-1)/2.0),90,1)
+    print(M)
+    dst = cv.warpAffine(img,M,(cols,rows))
+
+    cv.imshow("dst", dst)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
+    ```
+
+    运行结果：
+    ![test_3_8_rotation](./doc_image/test_3_8_rotation.png)
+
+(6) 仿射变换
+
+- 在仿射变换中，原始图像中的所有平行线在输出图像中仍然是平行的。为了找到转换矩阵，我们需要输入三个点和它们在输出图片中的位置。
+- 然后通过 cv.getAffineTransform() 函数得到 2*3 的矩阵。
+- 最后在使用 cv.warpAffine() 函数。
+- 代码演示：(test_3_9_affine_transformation.py)
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/sudoku.png')
+    rows,cols,ch = img.shape
+    pts1 = np.float32([[50,50],[200,50],[50,200]])
+    pts2 = np.float32([[10,100],[200,50],[100,250]])
+    M = cv.getAffineTransform(pts1,pts2)
+    dst = cv.warpAffine(img,M,(cols,rows))
+    plt.subplot(121),plt.imshow(img),plt.title('Input')
+    plt.subplot(122),plt.imshow(dst),plt.title('Output')
+    plt.show()
+    ```
+
+    运行结果：  
+    ![test_3_9_affine_transformation](./doc_image/test_3_9_affine_transformation.png)
+
+(7) 投影变换
+
+- 投影变换需要 3 * 3 的矩阵。经过变换之后，直线依旧是直线。
+- 为了找到变换矩阵，你需要 4 个点和在输出图像上对应的 4 个点。
+- 在 4 个点中， 有 3 个点不共线。
+- 然后可以通过 cv.getPerspectiveTransform() 函数，得到对应的变换矩阵。
+- 最后使用 cv.warpPerspective() 矩阵。
+- 代码演示(test_3_10_perspective_transformation.py)
+代码：
+
+    ```python
+    import numpy as np
+    import cv2 as cv
+    from matplotlib import pyplot as plt
+
+
+    img = cv.imread('./opencv_manual/test_image/sudoku.png')
+    rows,cols,ch = img.shape
+    pts1 = np.float32([[56,65],[368,52],[28,387],[389,390]])
+    pts2 = np.float32([[0,0],[300,0],[0,300],[300,300]])
+    M = cv.getPerspectiveTransform(pts1,pts2)
+    dst = cv.warpPerspective(img,M,(300,300))
+    plt.subplot(121),plt.imshow(img),plt.title('Input')
+    plt.subplot(122),plt.imshow(dst),plt.title('Output')
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_10_perspective_transformation](./doc_image/test_3_10_perspective_transformation.png)
+
+#### 3.1.3 图像二值化
+
+(1) 目标
+
+- 学习简单的二值化，自适应二值化以及 Otsu's 二值化
+- 学习函数：cv.threshold() 和 cv.adaptiveThreshold()
+
+(2) 简单的二值化
+
+(3) 自适应二值化
+
+(4) Otsu's 阈值
 
 
 
