@@ -980,19 +980,92 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     运行结果：
     ![test_3_10_perspective_transformation](./doc_image/test_3_10_perspective_transformation.png)
 
-#### 3.1.3 图像二值化
+#### 3.2.3 图像阈值化
 
 (1) 目标
 
-- 学习简单的二值化，自适应二值化以及 Otsu's 二值化
+- 学习简单阈值化，自适应阈值化以及 Otsu's 二值化
 - 学习函数：cv.threshold() 和 cv.adaptiveThreshold()
 
-(2) 简单的二值化
+(2) 简单阈值化
 
-(3) 自适应二值化
+- 在简单阈值化中，所有的像素的阈值都相同。如果，像素值小于阈值，它将被置为 0 ；如果，像素值大于阈值，它将被置为最大值。
+- 简单阈值化使用 cv.threshold() 函数来实现。cv.threshold() 函数的第一个参数是输入图片，第二个参数是阈值，第三个参数是最大值，第四个参数
+- 代码演示(test_3_11_threshold.py)
+代码：
 
-(4) Otsu's 阈值
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
 
+    img = cv.imread('./opencv_manual/test_image/gradient.png',0)
+    ret,thresh1 = cv.threshold(img,127,255,cv.THRESH_BINARY)
+    ret,thresh2 = cv.threshold(img,127,255,cv.THRESH_BINARY_INV)
+    ret,thresh3 = cv.threshold(img,127,255,cv.THRESH_TRUNC)
+    ret,thresh4 = cv.threshold(img,127,255,cv.THRESH_TOZERO)
+    ret,thresh5 = cv.threshold(img,127,255,cv.THRESH_TOZERO_INV)
+    titles = ['Original Image','BINARY','BINARY_INV','TRUNC','TOZERO','TOZERO_INV']
+    images = [img, thresh1, thresh2, thresh3, thresh4, thresh5]
+    for i in range(6):
+        plt.subplot(2,3,i+1),plt.imshow(images[i],'gray')
+        plt.title(titles[i])
+        plt.xticks([]),plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_11_threshold](./doc_image/test_3_11_threshold.png)
+
+(3) 自适应阈值化
+
+- 在先前的部分，我们使用一个全局值作为阈值。但是这种方式并不适用于所有的场景。例如，如果图像在不同区域具有不同的照明条件。在这种情况下，自适应阈值化可以帮助你。
+- 在自适应阈值化中，算法根据像素周围的一个小区域来确定像素的阈值。
+- 因此，对于同一幅图像的不同区域，我们得到了不同的阈值，对于不同光照的图像，得到了更好的结果。
+- 对于自适应阈值化，我们使用 cv.adaptiveThreshold() 来实现。
+- 代码演示（test_3_12_adaptive_threshlod.py）
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+    img = cv.imread('./opencv_manual/test_image/sudoku.png',0)
+    img = cv.medianBlur(img,5)
+    ret,th1 = cv.threshold(img,127,255,cv.THRESH_BINARY)
+    th2 = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_MEAN_C,\
+                cv.THRESH_BINARY,11,2)
+    th3 = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C,\
+                cv.THRESH_BINARY,11,2)
+    titles = ['Original Image', 'Global Thresholding (v = 127)',
+                'Adaptive Mean Thresholding', 'Adaptive Gaussian Thresholding']
+    images = [img, th1, th2, th3]
+    for i in range(4):
+        plt.subplot(2,2,i+1),plt.imshow(images[i],'gray')
+        plt.title(titles[i])
+        plt.xticks([]),plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：  
+    ![test_3_12_adaptive_threshlod](./doc_image/test_3_12_adaptive_threshlod.png)
+
+(4) Otsu's 二值化
+
+- 在全局阈值化中，我们任意选择值作为阈值。然而，使用 Otsu's 方法就不用去选择阈值了。
+- 待写。
+
+#### 3.2.4 图像平滑
+
+(1) 目标
+
+- 用各种低通滤波器模糊图像
+- 对图像应用自定义筛选器
+
+(2) 二维卷积
+
+- 与一维信号一样，图像也可以用各种低通滤波器（LPF）、高通滤波器（HPF）等进行滤波。
+- LPF 可以用来移除噪点，模糊图像等。HPF 帮助找到图像的边缘。
+- OpenCV 提供 cv.filter2D() 来使核与图片进行卷积。
 
 
 ## 四. OpenCV 高级篇
