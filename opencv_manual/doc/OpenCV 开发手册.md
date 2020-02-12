@@ -1066,6 +1066,137 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
 - 与一维信号一样，图像也可以用各种低通滤波器（LPF）、高通滤波器（HPF）等进行滤波。
 - LPF 可以用来移除噪点，模糊图像等。HPF 帮助找到图像的边缘。
 - OpenCV 提供 cv.filter2D() 来使核与图片进行卷积。
+- 加入我们想对一个图片进行均值滤波。首先，我们要构建一个 5 * 5 的滤波核
+
+```math
+    k = \frac{1}{25}
+    \begin  {bmatrix}
+    1 & 1 & 1 & 1 & 1\\
+    1 & 1 & 1 & 1 & 1\\
+    1 & 1 & 1 & 1 & 1\\
+    1 & 1 & 1 & 1 & 1\\
+    1 & 1 & 1 & 1 & 1\\
+    \end    {bmatrix}
+```
+
+- 该操作的工作原理如下：将此核里所有25个像素相加，取平均值，并用新的平均值替换中心像素。
+
+- 代码演示（test_3_14_averaging_filter.py）
+代码：
+
+    ```python
+    import numpy as np
+    import cv2 as cv
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/opencv-logo.png')
+    kernel = np.ones((5,5),np.float32)/25
+    dst = cv.filter2D(img,-1,kernel)
+    plt.subplot(121),plt.imshow(img),plt.title('Original')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(dst),plt.title('Averaging')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_14_averaging_filter](./doc_image/test_3_14_averaging_filter.png)
+
+(2) 图像模糊
+
+- 图像模糊通过图片与一个低通滤波核完成。它用于消除噪音。他能移除图片的高频内容。
+
+(3) 均值模糊
+
+- 图片通过与一个归一化块滤波核进行卷积。他只是简单对核里面的像素求取平均值，然后替换中心元素。
+- 均值模糊使用函数 cv.blur() 和  cv.boxFilter() 来完成。
+- 代码演示(test_3_15_averaging_blur.py)
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/opencv-logo.png')
+    blur = cv.blur(img,(5,5))
+    plt.subplot(121),plt.imshow(img),plt.title('Original')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(blur),plt.title('Blurred')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_15_averaging_blur](./doc_image/test_3_15_averaging_blur.png)
+
+
+(4) 高斯模糊
+
+- 在高斯模糊中，使用的是高斯滤波核来代替归一化块滤波核。
+- 使用函数 cv.GaussianBlur() 来完成高斯模糊。
+- 代码演示（test_3_16_Gaussian_blur.py）
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/opencv-logo.png')
+    blur = cv.GaussianBlur(img,(5,5),0)
+    plt.subplot(121),plt.imshow(img),plt.title('Original')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(blur),plt.title('Blurred')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_16_gaussian_blur](./doc_image/test_3_16_gaussian_blur.png)
+
+(5) 中值模糊
+
+- 中值滤波使用 cv.medianBlur() 来实现。
+- 代码演示（test_3_17_median_blur.py）
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/opencv-logo.png')
+    blur = cv.GaussianBlur(img,(5,5),0)
+    plt.subplot(121),plt.imshow(img),plt.title('Original')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(blur),plt.title('Blurred')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_17_median_blur](./doc_image/test_3_17_median_blur.png)
+
+(6) 双边滤波
+
+#### 3.2.5 形态学变换
+
+(1) 目标
+
+- 学习不同的形态学操作，包括腐蚀，膨胀，开运算，闭运算等。
+- 学习函数：cv.erode(), cv.dilate(), cv.morphologyEx() 。
+
+(2) 理论
+
+- 形态学操作是基于图片形状的一些简单操作。通常在二值图片上进行。
+- 它需要两个输入，一个是原始图片，第二个是决定操作性质的结构元素或内核。
+- 最简单的形态学操作是腐蚀和膨胀。
+- 开运算，闭运算等都是在此基础上进行的。
+
+(3) 腐蚀
+
+
 
 
 ## 四. OpenCV 高级篇
