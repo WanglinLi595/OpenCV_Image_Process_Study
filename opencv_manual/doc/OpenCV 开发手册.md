@@ -1196,7 +1196,223 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
 
 (3) 腐蚀
 
+- 腐蚀的基本概念就像土壤侵蚀一样，它侵蚀了前景对象的边界（总是尽量保持前景对象为白色）
+- 代码演示（test_3_18_erosion.py）
+代码：
 
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/j.png',0)
+    kernel = np.ones((5,5),np.uint8)
+    erosion = cv.erode(img,kernel,iterations = 1)
+
+    plt.subplot(121),plt.imshow(img, 'gray'),plt.title('Original')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(erosion, 'gray'),plt.title('erosion')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_18_erosion](./doc_image/test_3_18_erosion.png)
+
+(4) 膨胀
+
+- 正好与腐蚀相反。
+- 代码演示（test_3_19_dilation.py）
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/j.png',0)
+    kernel = np.ones((5,5),np.uint8)
+    dilation = cv.dilate(img,kernel,iterations = 1)
+
+    plt.subplot(121),plt.imshow(img, 'gray'),plt.title('Original')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(dilation, 'gray'),plt.title('dilation')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_19_dilation](./doc_image/test_3_19_dilation.png)
+
+(5) 开运算
+
+- 开运算是先腐蚀后膨胀。
+- 代码演示（test_3_20_opening.py）
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/opening.bmp',0)
+    kernel = np.ones((5,5), np.uint8)
+    opening = cv.morphologyEx(img, cv.MORPH_OPEN, kernel)
+
+    plt.subplot(121),plt.imshow(img, 'gray'),plt.title('original')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(opening, 'gray'),plt.title('opening')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_20_opening](./doc_image/test_3_20_opening.png)
+
+(6) 闭运算
+
+- 闭运算与开运算相反，先膨胀后腐蚀。
+- 它用于填充前景对象里的小孔或是对象上的小黑点。
+- 代码演示（test_3_21_closing.py）
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/closing.bmp',0)
+    kernel = np.ones((10,10), np.uint8)
+    closing = cv.morphologyEx(img, cv.MORPH_CLOSE, kernel)
+
+    plt.subplot(121),plt.imshow(img, 'gray'),plt.title('original')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(closing, 'gray'),plt.title('closing')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果:
+    ![test_3_21_closing](./doc_image/test_3_21_closing.png)
+
+(7) 形态学梯度
+
+- 形态学梯度的运算是膨胀图像减去膨胀图像
+- 它会提取对象的轮廓
+- 代码演示（test_3_22_morphological_gradient.py）
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/gradient.bmp',0)
+    kernel = np.ones((10,10), np.uint8)
+    gradient = cv.morphologyEx(img, cv.MORPH_GRADIENT, kernel)
+
+    plt.subplot(121),plt.imshow(img, 'gray'),plt.title('original')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(gradient, 'gray'),plt.title('gradient')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_22_modphological_gradient](./doc_image/test_3_22_modphological_gradient.png)
+
+(8) 顶帽
+
+- 顶帽的运算是输入图像减去开运算图像
+- 代码演示（test_3_23_top_hat.py）
+代码：
+
+    ```pyhton
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/gradient.bmp',0)
+    kernel = np.ones((8, 8), np.uint8)
+    tophat = cv.morphologyEx(img, cv.MORPH_TOPHAT, kernel)
+
+    plt.subplot(121),plt.imshow(img, 'gray'),plt.title('original')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(tophat, 'gray'),plt.title('tophat')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_23_tophat](./doc_image/test_3_23_tophat.png)
+
+(9) 黑帽
+
+- 黑帽是闭运算图像减去输入图像
+- 代码演示（test_3_24_black_hat.py）
+代码：
+
+    ```python
+    import cv2 as cv
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/gradient.bmp',0)
+    kernel = np.ones((10,10), np.uint8)
+    blackhat = cv.morphologyEx(img, cv.MORPH_BLACKHAT, kernel)
+
+    plt.subplot(121),plt.imshow(img, 'gray'),plt.title('original')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(blackhat, 'gray'),plt.title('blackhat')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：  
+    ![test_3_24_blackhat](./doc_image/test_3_24_blackhat.png)
+
+(10) 结构元素
+
+- 在前面的例子中，我们在 Numpy 的帮助下手动创建了一个结构化元素。它是长方形的。但在某些情况下，可能需要椭圆形/圆形内核。因此，OpenCV 有一个函数 cv.getStructuringElement() 。只要传递内核的形状和大小，就可以得到所需的内核。
+- 代码演示
+
+    ```python
+    # 矩形核
+     >>> cv.getStructuringElement(cv.MORPH_RECT,(5,5))
+     array([[1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1]], dtype=uint8)
+
+    # 椭圆核
+    >>> cv.getStructuringElement(cv.MORPH_ELLIPSE,(5,5))
+    array([[0, 0, 1, 0, 0],
+           [1, 1, 1, 1, 1],
+           [1, 1, 1, 1, 1],
+           [1, 1, 1, 1, 1],
+           [0, 0, 1, 0, 0]], dtype=uint8)
+
+    # 十字核
+    >>> cv.getStructuringElement(cv.MORPH_CROSS,(5,5))
+    array([[0, 0, 1, 0, 0],
+           [0, 0, 1, 0, 0],
+           [1, 1, 1, 1, 1],
+           [0, 0, 1, 0, 0],
+           [0, 0, 1, 0, 0]], dtype=uint8)
+    ```
+
+#### 3.2.6 图像梯度
+
+(1) 目标
+
+- 寻找图像梯度，边缘等。
+- 学习函数： cv.Sobel(), cv.Scharr(), cv.Laplacian()
+
+(2) 理论
+
+- OpenCV 提供三种类型的梯度滤波器或高通滤波器： Sobel、Scharr 和 Laplacian。
+
+(3) Sobel 和 Scharr 衍生物
 
 
 ## 四. OpenCV 高级篇

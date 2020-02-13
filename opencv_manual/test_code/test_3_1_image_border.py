@@ -1,16 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
 '''
-@描述: 
-@版本: V1_0
-@作者: LiWanglin
-@创建时间: Do not edit
-@最后编辑人: LiWanglin
-@最后编辑时间: Do not Edit
-'''
-#!/usr/bin/env python
-# coding=utf-8
-'''
 @描述: 为图片添加边框
 @版本: V1_0
 @作者: LiWanglin
