@@ -11,7 +11,7 @@
 
 import cv2 as cv
 
-image_data = cv.imread("./opencv_manual/test_image/lenacolor.png", cv.IMREAD_COLOR) # 读取图片数据
+image_data = cv.imread("../test_image/lenacolor.png", cv.IMREAD_COLOR) # 读取图片数据
 cv.imshow("Demo1", image_data)    # 显示图片
 cv.waitKey(0)   # 等待用户按下按键
 cv.destroyAllWindows()  # 摧毁所有显示图片的窗口

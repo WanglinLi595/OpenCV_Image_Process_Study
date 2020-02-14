@@ -13,7 +13,7 @@ import cv2 as cv
 from matplotlib import pyplot as plt
 
 
-img = cv.imread('./opencv_manual/test_image/sudoku.png')
+img = cv.imread('./test_image/sudoku.png')
 rows,cols,ch = img.shape
 pts1 = np.float32([[56,65],[368,52],[28,387],[389,390]])
 pts2 = np.float32([[0,0],[300,0],[0,300],[300,300]])

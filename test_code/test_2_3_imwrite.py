@@ -8,10 +8,11 @@
 @最后编辑人: LiWanglin
 @最后编辑时间: 2020.02.06
 '''
+
 import numpy as np
 import cv2 as cv
 
-img = cv.imread("./opencv_manual/test_image/lena512.bmp", cv.IMREAD_UNCHANGED)    # 读取图片
+img = cv.imread("../test_image/lena512.bmp", cv.IMREAD_UNCHANGED)    # 读取图片
 cv.imshow("image", img)     # 显示图片
 k = cv.waitKey(0)       # 等待用户按键
 if(k == 27):            # 按下 ESC 键摧毁窗口

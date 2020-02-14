@@ -103,7 +103,7 @@ Anaconda 默认的镜像源都在国外，访问不但速度慢，而且经常�
 ```python
 import cv2 as cv
 
-image_data = cv.imread("./opencv_manual/test_image/lenacolor.png", cv.IMREAD_COLOR) # 读取图片数据
+image_data = cv.imread("./test_image/lenacolor.png", cv.IMREAD_COLOR) # 读取图片数据
 cv.imshow("Demo1", image_data)    # 显示图片
 cv.waitKey(0)   # 等待用户按下按键
 cv.destroyAllWindows()  # 摧毁所有显示图片的窗口
@@ -142,7 +142,7 @@ cv.destroyAllWindows()  # 摧毁所有显示图片的窗口
 ```python
 import cv2 as cv
 
-image = cv.imread("./opencv_manual/test_image/lena512.bmp", cv.IMREAD_UNCHANGED)
+image = cv.imread("./test_image/lena512.bmp", cv.IMREAD_UNCHANGED)
 print("image的类型为：", type(image))# 打印图片类型
 print("image = \n", image)# 打印图片数据
 ```
@@ -164,7 +164,7 @@ print("image = \n", image)# 打印图片数据
 ```python
 import cv2 as cv
 
-image = cv.imread("./opencv_manual/test_image/lena512.bmp", cv.IMREAD_UNCHANGED)  # 读取图片
+image = cv.imread("./test_image/lena512.bmp", cv.IMREAD_UNCHANGED)  # 读取图片
 cv.imshow("Test_3", image)     # 开辟一个窗口显示图片
 cv.waitKey(0)                  # 等待用户按下按键
 cv.destroyAllWindows()         # 释放所有窗口
@@ -184,7 +184,7 @@ cv.destroyAllWindows()         # 释放所有窗口
 import numpy as np
 import cv2 as cv
 
-img = cv.imread("./opencv_manual/test_image/lena512.bmp", cv.IMREAD_UNCHANGED)    # 读取图片
+img = cv.imread("./test_image/lena512.bmp", cv.IMREAD_UNCHANGED)    # 读取图片
 cv.imshow("image", img)     # 显示图片
 k = cv.waitKey(0)       # 等待用户按键
 if(k == 27):            # 按下 ESC 键摧毁窗口
@@ -205,7 +205,7 @@ import numpy as np
 import cv2 as cv
 from matplotlib import pyplot as plt
 
-img = cv.imread("./opencv_manual/test_image/lena512.bmp", cv.IMREAD_UNCHANGED) # 读取图片
+img = cv.imread("./test_image/lena512.bmp", cv.IMREAD_UNCHANGED) # 读取图片
 # 设置图片在 matplotlib 的显示方式
 plt.imshow(img, cmap="gray", interpolation='bicubic')
 plt.show()          # 显示图像
@@ -272,7 +272,7 @@ cv.destroyAllWindows()      # 摧毁所有创建的窗口
     import cv2 as cv
 
     # 创建 VideoCapture 类
-    cap = cv.VideoCapture("./opencv_manual/test_video/vtest.avi")  
+    cap = cv.VideoCapture("./test_video/vtest.avi")  
 
     while cap.isOpened():       # 视频播放完毕，退出循环
         ret, frame = cap.read()     # 读取视频数据
@@ -534,7 +534,7 @@ cv.destroyAllWindows()
     ```python
     >>> import numpy as np
     >>> import cv2 as cv
-    >>> img = cv.imread('./opencv_manual/test_image/lenacolor.png')
+    >>> img = cv.imread('./test_image/lenacolor.png')
     ```
 
 - 然后可以通过行和列坐标访问像素值。对于 BGR 图片，返回值为一个 B ，G ，R 值矩阵。对于灰度图片，则返回相应的灰度值。
@@ -631,7 +631,7 @@ cv.split() 会花费大量的时间，所以只有你需要用到的时候才去
     from matplotlib import pyplot as plt
 
     # 读取图片
-    img1 = cv.imread("./opencv_manual/test_image/OpenCVLogo.jpg")
+    img1 = cv.imread("./test_image/OpenCVLogo.jpg")
 
     # 为图片添加不同类型的边框
     replicate = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_REPLICATE)
@@ -696,8 +696,8 @@ g(x) = (1 - \alpha)f_0(x) + \alpha f_1(x)
     from matplotlib import pyplot as plt
 
     # 读取图片
-    img1 = cv.imread("./opencv_manual/test_image/boat.bmp")
-    img2 = cv.imread("./opencv_manual/test_image/dollar.bmp")
+    img1 = cv.imread("./test_image/boat.bmp")
+    img2 = cv.imread("./test_image/dollar.bmp")
 
     # 图片按照不同的权重进行相加
     dst = cv.addWeighted(img1, 0.8, img2, 0.2, 0)
@@ -850,7 +850,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     ```python
     import numpy as np
     import cv2 as cv
-    img = cv.imread('./opencv_manual/test_image/messi5.jpg')
+    img = cv.imread('./test_image/messi5.jpg')
     # 图片扩大两倍
     res = cv.resize(img,None,fx=2, fy=2, interpolation = cv.INTER_CUBIC)
 
@@ -880,7 +880,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     ```python
     import numpy as np
     import cv2 as cv
-    img = cv.imread('./opencv_manual/test_image/messi5.jpg',0)
+    img = cv.imread('./test_image/messi5.jpg',0)
     rows,cols = img.shape
     M = np.float32([[1,0,100],[0,1,50]])
     dst = cv.warpAffine(img,M,(cols,rows))
@@ -908,7 +908,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     ```python
     import cv2 as cv
 
-    img = cv.imread('./opencv_manual/test_image/messi5.jpg',0)
+    img = cv.imread('./test_image/messi5.jpg',0)
     rows,cols = img.shape
     # cols-1 and rows-1 are the coordinate limits.
     M = cv.getRotationMatrix2D(((cols-1)/2.0,(rows-1)/2.0),90,1)
@@ -936,7 +936,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/sudoku.png')
+    img = cv.imread('./test_image/sudoku.png')
     rows,cols,ch = img.shape
     pts1 = np.float32([[50,50],[200,50],[50,200]])
     pts2 = np.float32([[10,100],[200,50],[100,250]])
@@ -966,7 +966,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     from matplotlib import pyplot as plt
 
 
-    img = cv.imread('./opencv_manual/test_image/sudoku.png')
+    img = cv.imread('./test_image/sudoku.png')
     rows,cols,ch = img.shape
     pts1 = np.float32([[56,65],[368,52],[28,387],[389,390]])
     pts2 = np.float32([[0,0],[300,0],[0,300],[300,300]])
@@ -999,7 +999,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/gradient.png',0)
+    img = cv.imread('./test_image/gradient.png',0)
     ret,thresh1 = cv.threshold(img,127,255,cv.THRESH_BINARY)
     ret,thresh2 = cv.threshold(img,127,255,cv.THRESH_BINARY_INV)
     ret,thresh3 = cv.threshold(img,127,255,cv.THRESH_TRUNC)
@@ -1029,7 +1029,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import cv2 as cv
     import numpy as np
     from matplotlib import pyplot as plt
-    img = cv.imread('./opencv_manual/test_image/sudoku.png',0)
+    img = cv.imread('./test_image/sudoku.png',0)
     img = cv.medianBlur(img,5)
     ret,th1 = cv.threshold(img,127,255,cv.THRESH_BINARY)
     th2 = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_MEAN_C,\
@@ -1089,7 +1089,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import cv2 as cv
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/opencv-logo.png')
+    img = cv.imread('./test_image/opencv-logo.png')
     kernel = np.ones((5,5),np.float32)/25
     dst = cv.filter2D(img,-1,kernel)
     plt.subplot(121),plt.imshow(img),plt.title('Original')
@@ -1118,7 +1118,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/opencv-logo.png')
+    img = cv.imread('./test_image/opencv-logo.png')
     blur = cv.blur(img,(5,5))
     plt.subplot(121),plt.imshow(img),plt.title('Original')
     plt.xticks([]), plt.yticks([])
@@ -1143,7 +1143,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/opencv-logo.png')
+    img = cv.imread('./test_image/opencv-logo.png')
     blur = cv.GaussianBlur(img,(5,5),0)
     plt.subplot(121),plt.imshow(img),plt.title('Original')
     plt.xticks([]), plt.yticks([])
@@ -1166,7 +1166,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/opencv-logo.png')
+    img = cv.imread('./test_image/opencv-logo.png')
     blur = cv.GaussianBlur(img,(5,5),0)
     plt.subplot(121),plt.imshow(img),plt.title('Original')
     plt.xticks([]), plt.yticks([])
@@ -1205,7 +1205,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/j.png',0)
+    img = cv.imread('./test_image/j.png',0)
     kernel = np.ones((5,5),np.uint8)
     erosion = cv.erode(img,kernel,iterations = 1)
 
@@ -1230,7 +1230,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/j.png',0)
+    img = cv.imread('./test_image/j.png',0)
     kernel = np.ones((5,5),np.uint8)
     dilation = cv.dilate(img,kernel,iterations = 1)
 
@@ -1255,7 +1255,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/opening.bmp',0)
+    img = cv.imread('./test_image/opening.bmp',0)
     kernel = np.ones((5,5), np.uint8)
     opening = cv.morphologyEx(img, cv.MORPH_OPEN, kernel)
 
@@ -1280,7 +1280,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/closing.bmp',0)
+    img = cv.imread('./test_image/closing.bmp',0)
     kernel = np.ones((10,10), np.uint8)
     closing = cv.morphologyEx(img, cv.MORPH_CLOSE, kernel)
 
@@ -1306,7 +1306,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/gradient.bmp',0)
+    img = cv.imread('./test_image/gradient.bmp',0)
     kernel = np.ones((10,10), np.uint8)
     gradient = cv.morphologyEx(img, cv.MORPH_GRADIENT, kernel)
 
@@ -1331,7 +1331,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/gradient.bmp',0)
+    img = cv.imread('./test_image/gradient.bmp',0)
     kernel = np.ones((8, 8), np.uint8)
     tophat = cv.morphologyEx(img, cv.MORPH_TOPHAT, kernel)
 
@@ -1356,7 +1356,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import numpy as np
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/gradient.bmp',0)
+    img = cv.imread('./test_image/gradient.bmp',0)
     kernel = np.ones((10,10), np.uint8)
     blackhat = cv.morphologyEx(img, cv.MORPH_BLACKHAT, kernel)
 
@@ -1429,7 +1429,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     import cv2 as cv
     from matplotlib import pyplot as plt
 
-    img = cv.imread('./opencv_manual/test_image/sudoku.png',0)
+    img = cv.imread('./test_image/sudoku.png',0)
     laplacian = cv.Laplacian(img,cv.CV_64F)
     sobelx = cv.Sobel(img,cv.CV_64F,1,0,ksize=5)
     sobely = cv.Sobel(img,cv.CV_64F,0,1,ksize=5)

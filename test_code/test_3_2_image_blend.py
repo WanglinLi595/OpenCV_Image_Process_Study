@@ -14,8 +14,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 # 读取图片
-img1 = cv.imread("./opencv_manual/test_image/boat.bmp")
-img2 = cv.imread("./opencv_manual/test_image/dollar.bmp")
+img1 = cv.imread("./test_image/boat.bmp")
+img2 = cv.imread("./test_image/dollar.bmp")
 
 # 图片按照不同的权重进行相加
 dst = cv.addWeighted(img1, 0.8, img2, 0.2, 0)

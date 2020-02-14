@@ -11,6 +11,6 @@
 
 import cv2 as cv
 
-image = cv.imread("./opencv_manual/test_image/lena512.bmp", cv.IMREAD_UNCHANGED)
+image = cv.imread("../test_image/lena512.bmp", cv.IMREAD_UNCHANGED)
 print("image的类型为：", type(image))# 打印图片类型
 print("image = \n", image)# 打印图片数据

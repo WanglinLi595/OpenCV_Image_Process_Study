@@ -12,7 +12,7 @@ import numpy as np
 import cv2 as cv
 
 # 创建 VideoCapture 类
-cap = cv.VideoCapture("./opencv_manual/test_video/vtest.avi")  
+cap = cv.VideoCapture("/test_video/vtest.avi")  
 
 while cap.isOpened():       # 视频播放完毕，退出循环
     ret, frame = cap.read()     # 读取视频数据

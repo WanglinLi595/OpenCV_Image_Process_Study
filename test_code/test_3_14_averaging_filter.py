@@ -13,7 +13,7 @@ import numpy as np
 import cv2 as cv
 from matplotlib import pyplot as plt
 
-img = cv.imread('./opencv_manual/test_image/opencv-logo.png')
+img = cv.imread('./test_image/opencv-logo.png')
 kernel = np.ones((5,5),np.float32)/25
 dst = cv.filter2D(img,-1,kernel)
 plt.subplot(121),plt.imshow(img),plt.title('Original')

@@ -13,7 +13,7 @@ import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
 
-img = cv.imread('./opencv_manual/test_image/closing.bmp',0)
+img = cv.imread('./test_image/closing.bmp',0)
 kernel = np.ones((10,10), np.uint8)
 closing = cv.morphologyEx(img, cv.MORPH_CLOSE, kernel)
 

@@ -10,7 +10,7 @@
 '''
 import cv2 as cv
 
-image = cv.imread("./opencv_manual/test_image/lena512.bmp", cv.IMREAD_UNCHANGED)  # 读取图片
+image = cv.imread("../test_image/lena512.bmp", cv.IMREAD_UNCHANGED)  # 读取图片
 cv.imshow("Test_3", image)     # 开辟一个窗口显示图片
 cv.waitKey(0)                  # 等待用户按下按键
 cv.destroyAllWindows()         # 释放所有窗口

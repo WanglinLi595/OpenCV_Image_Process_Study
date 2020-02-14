@@ -13,7 +13,7 @@ import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
 
-img = cv.imread('./opencv_manual/test_image/j.png',0)
+img = cv.imread('./test_image/j.png',0)
 kernel = np.ones((5,5),np.uint8)
 dilation = cv.dilate(img,kernel,iterations = 1)
 

@@ -14,7 +14,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 # 读取图片
-img1 = cv.imread("./opencv_manual/test_image/OpenCVLogo.jpg")
+img1 = cv.imread("./test_image/OpenCVLogo.jpg")
 
 # 为图片添加不同类型的边框
 replicate = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_REPLICATE)
