@@ -1412,7 +1412,51 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
 
 - OpenCV 提供三种类型的梯度滤波器或高通滤波器： Sobel、Scharr 和 Laplacian。
 
-(3) Sobel 和 Scharr 衍生物
+(3) Sobel 和 Scharr 导数
+
+- Sobel 算子是一种高斯平滑加微分的联合算子，因此对噪声的抵抗能力更强。
+- 可以指定要获取的垂直或水平导数的方向（分别由参数 yorder 和 xorder 指定）。
+- 可以通过 ksize 指定核的大小。
+- 如果ksize=-1，则使用 3x3 Scharr 滤波器，其结果比 3x3 Sobel 滤波器更好。
+
+(4) Laplacian 导数
+
+- 代码演示（test_3_25_image_gradients.py）
+代码：
+
+    ```python
+    import numpy as np
+    import cv2 as cv
+    from matplotlib import pyplot as plt
+
+    img = cv.imread('./opencv_manual/test_image/sudoku.png',0)
+    laplacian = cv.Laplacian(img,cv.CV_64F)
+    sobelx = cv.Sobel(img,cv.CV_64F,1,0,ksize=5)
+    sobely = cv.Sobel(img,cv.CV_64F,0,1,ksize=5)
+    plt.subplot(2,2,1),plt.imshow(img,cmap = 'gray')
+    plt.title('Original'), plt.xticks([]), plt.yticks([])
+    plt.subplot(2,2,2),plt.imshow(laplacian,cmap = 'gray')
+    plt.title('Laplacian'), plt.xticks([]), plt.yticks([])
+    plt.subplot(2,2,3),plt.imshow(sobelx,cmap = 'gray')
+    plt.title('Sobel X'), plt.xticks([]), plt.yticks([])
+    plt.subplot(2,2,4),plt.imshow(sobely,cmap = 'gray')
+    plt.title('Sobel Y'), plt.xticks([]), plt.yticks([])
+    plt.show()
+    ```
+
+    运行结果：
+    ![test_3_25_image_gradients](./doc_image/test_3_25_image_gradients.png)
+
+#### 3.2.7 Canny 边缘探测
+
+(1) 目标
+
+- 学会 Canny 边缘探测的概念
+- 学习函数：cv.Canny()
+
+(2) 理论
+
+  
 
 
 ## 四. OpenCV 高级篇
