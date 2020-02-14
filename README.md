@@ -27,7 +27,7 @@ test_code\       # 存放代码中所使用到得视频资源
 
 重要文件：  
 
-[OpenCV 开发手册.md](https://github.com/WanglinLi595/OpenCV_Image_Process_Study/blob/master/opencv_manual/doc/OpenCV%20%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C.md)  
+[OpenCV 开发手册.md](https://github.com/WanglinLi595/OpenCV_Image_Process_Study/blob/master/doc/OpenCV%20%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C.md)  
 
 ## 项目说明
 
