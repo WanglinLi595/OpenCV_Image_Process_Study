@@ -24,11 +24,9 @@ while True:
     if not ret:       # 读取帧出错
         print("不能接收帧，退出中 ...")
         break
-    # 将 BGR 图像转化为灰度图
-    gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
     # 显示图像，循环显示，相当于播放视频
-    cv.imshow("frame", gray)
+    cv.imshow("frame", frame)
     if cv.waitKey(1) == ord('q'):       # 按下 Q 键退出
         break
 cap.release()       # 在结尾的时候，一定要释放捕获

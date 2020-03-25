@@ -14,7 +14,7 @@ import cv2 as cv
 
 cap = cv.VideoCapture(0)        # 打开相机
 
-fourcc = cv.VideoWriter_fourcc(*'XVID')     # 定义编码对象
+fourcc = cv.VideoWriter_fourcc(*'DIVX')     # 定义编码对象
 # 创建 VideoWriter 对象
 out = cv.VideoWriter("output.avi", fourcc, 20.0 ,(640, 480))
 

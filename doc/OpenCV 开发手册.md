@@ -222,48 +222,49 @@ OpenCV 加载的彩色图像处于 BGR 模式。但是Matplotlib 以 RGB 模式�
 (1) 目标
 
 - 学会读取视频，播放视频和保存视频
-- 学习从相机捕捉和显示
+- 学习读取摄像头并进行显示
 - 学习函数：cv.VideoCapture(), cv.VideoWriter()
 
 (2) 从相机捕获视频
 
-- 想要捕获一个视频，你需要创建一个 VideoCapture 对象，它的参数可以是设备索引或视频文件名称。设备索引只是指定哪个摄像机的编号。相机捕获完成之后，需要使用 cap.release() 结束捕获。
+- 想要从摄像头获取图像，我们首先需要创建一个 VideoCapture 对象，它的参数可以是设备索引或视频文件的路径。设备索引是指定那个摄像机的编号。相机捕获完成之后，我们需要使用 release() 释放设备。
 - 代码演示：  
 代码：(test_2_5_capture_video.py)
 
-```python
-import numpy as np
-import cv2 as cv
+    ```python
+    import numpy as np
+    import cv2 as cv
 
-cap = cv.VideoCapture(0)    # 创建 VideoCapture 对象
-if not cap.isOpened():       # 相机打开失败
-    print("相机打开失败")
-    exit()                  # 退出程序
+    cap = cv.VideoCapture(0)    # 创建 VideoCapture 对象
+    if not cap.isOpened():       # 相机打开失败
+        print("相机打开失败")
+        exit()                  # 退出程序
 
-while True:
-    # 一帧一帧的捕获，如果正确读取帧，ret 返回 True
-    ret, frame = cap.read()
+    while True:
+        # 一帧一帧的捕获，如果正确读取帧，ret 返回 True
+        ret, frame = cap.read()
 
-    if not ret:       # 读取帧出错
-        print("不能接收帧，退出中 ...")
-        break
-    # 将 BGR 图像转化为灰度图
-    gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        if not ret:       # 读取帧出错
+            print("不能接收帧，退出中 ...")
+            break
+        # 将 BGR 图像转化为灰度图
+        gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
-    # 显示图像，循环显示，相当于播放视频
-    cv.imshow("frame", gray)
-    if cv.waitKey(1) == ord('q'):       # 按下 Q 键退出
-        break
-cap.release()       # 在结尾的时候，一定要释放捕获
-cv.destroyAllWindows()      # 摧毁所有创建的窗口
-```
+        # 显示图像，循环显示，相当于播放视频
+        cv.imshow("frame", gray)
+        if cv.waitKey(1) == ord('q'):       # 按下 Q 键退出
+            break
+    cap.release()       # 在结尾的时候，一定要释放设备
+    cv.destroyAllWindows()      # 摧毁所有创建的窗口
+    ```
 
-- cap.read() 返回一个布尔值 ( True/False ) 。如果读取正确，他将会返回 True 。
 - cap.isOpened() 判断相机是否初始化成功。如果相机初始化成功，返回 True.
+- cap.read() 用来获取是否从摄像头获取图像。如果成功获取，返回布尔值 True ，以及读取的图像。
   
 (3) 从文件播放视频
 
-- 它与从摄像机捕获相同，只是摄像机索引更换为视频名称。在播放帧的时候，应选取适当的 cv.waitKey() 参数。如果参数过小，视频播放速度将会变得很快；参数过大，视频播放速度会变慢（这就是您可以慢动作显示视频的方式）。正常情况下25就可以了。
+- 它与从摄像机读取相同，只是将摄像机索引更换为视频路径。
+- 在播放帧的时候，应选取适当的 cv.waitKey() 参数。如果参数过小，视频播放速度将会变得很快；参数过大，视频播放速度会变慢（这就是您可以慢动作显示视频的方式）。正常情况下 25 就可以了。
 - 代码演示：
 代码：(test_2_6_play_video.py)  
 
@@ -281,9 +282,7 @@ cv.destroyAllWindows()      # 摧毁所有创建的窗口
             print("视频解析失败，退出中 ...")
             break
 
-        gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-
-        cv.imshow("frame", gray)    # 显示图片
+        cv.imshow("frame", frame)    # 显示图片
         if cv.waitKey(25) == ord('q'):   # 控制播放速度，按 Q 键退出
             break
     cap.release()       # 关闭视频
@@ -295,8 +294,8 @@ cv.destroyAllWindows()      # 摧毁所有创建的窗口
 
 (4) 保存视频
 
-- 对于保存图片，非常简单，仅仅使用 cv.imwrite() 就可以了。但对于保存视频来说，则需要做更多的工作。
-- 在保存视频的时候，我们应该创建一个 VideoWriter 对象。在创建 VideoWriter 对象时，传入的参数有：输出文件名，指定 FourCC 编码，fps( frames per second 每秒的帧数) ，帧大小以及 isColor flag 标志。如果 isColor 为 True ，编码器使用彩色框，否则将与灰度框一起使用。  
+- 如果我们想要保存图片，非常简单，仅仅使用 cv.imread() 就可以了。但想要保存视频，就不是那么一件容易的事了。
+- 在保存视频的时候，我们需要创建一个 VideoWriter 对象。在创建 VideoWriter 对象时，我们需要传递的参数有：输出文件名，指定的 FourCC 编码，fps（frams per seconde 每秒的帧数），帧大小以及 isColor flag 。如果 isColor 为 Ture ，编码器使用彩色框。  
 - FourCC 是一个 4 字节的代码，用于指定视频编解码器。在<http://fourcc.org> 网站上，你可以找到可用的代码列表。它取决于平台。遵循编解码器对保存视频来说效果很好。
   - 在 Fedora 上：DIVX, XVID, MJPG, X264, WMV1, WMV2
   - 在 Windows 上：DIVX
@@ -311,7 +310,7 @@ cv.destroyAllWindows()      # 摧毁所有创建的窗口
 
     cap = cv.VideoCapture(0)        # 打开相机
 
-    fourcc = cv.VideoWriter_fourcc(*'XVID')     # 定义编码对象
+    fourcc = cv.VideoWriter_fourcc(*'DIVX')     # 定义编码对象
     # 创建 VideoWriter 对象
     out = cv.VideoWriter("output.avi", fourcc, 20.0 ,(640, 480))
 
@@ -348,12 +347,12 @@ cv.destroyAllWindows()      # 摧毁所有创建的窗口
 
 - img : 要添加图像的图片
 - color : 形状的颜色。对于 BGR 图像而言，以元组的方式传递，如蓝色 (255, 0, 0) 。对于灰度图而言，仅仅传递灰度值就可以了。
-- thickness : 线或圆等图形的粗细。如果对于封闭的图像（如圆）其thickness值为 -1 ，它将填充形状。默认值为 1 。
-- lineType ：线的类型， 是否为 8-connected, anti-aliased 线等等。默认为 8-connected。
+- thickness : 线或圆等图形的粗细。如果对于封闭的图像（如圆）其 thickness 值为 -1 ，它将填充形状。默认值为 1 。
+- lineType ：线的类型， 是否为 8-connected, anti-aliased 线等。默认为 8-connected。
   
-(3) 画线
+(3) 画直线
 
-- 要绘制一条线，你需要确定线的开始和结束坐标。
+- 要绘制一条直线，你需要确定线的开始和结束坐标。
 - 我们先创建一幅黑色背景图，然后在其左上角到右下角绘制一条蓝线。
 - 代码演示：
 代码：(test_2_8_draw_line.py)
@@ -372,37 +371,36 @@ cv.destroyAllWindows()      # 摧毁所有创建的窗口
     cv.destroyAllWindows()  # 摧毁窗口
     ```
 
-运行结果：  
-![test_2_8_draw_line.py](./doc_image/test_2_8_draw_line.png)
+- 运行结果：  
+    ![test_2_8_draw_line.py](./doc_image/test_2_8_draw_line.png)
 
 (4) 画矩形框
 
-- 要绘制矩形，你需要矩形确定左上角和右下角的坐标  
+- 要绘制矩形，你需要确定矩形左上角和右下角的坐标  
 - 代码演示：(test_2_9_drawing_rectangle.py)
 
-```python
-import numpy as np
-import cv2 as cv
+    ```python
+    import numpy as np
+    import cv2 as cv
 
-# 创建一个黑色图框
-img = np.zeros((512,512,3), np.uint8)
+    # 创建一个黑色图框
+    img = np.zeros((512,512,3), np.uint8)
 
-# 绘制一个蓝色的矩形框
-cv.rectangle(img, (100, 100), (200, 200), (255, 0, 0), -1)
+    # 绘制一个蓝色的矩形框
+    cv.rectangle(img, (100, 100), (200, 200), (255, 0, 0), -1)
 
-cv.imshow("rectangle", img)         # 显示图片
+    cv.imshow("rectangle", img)         # 显示图片
 
-cv.waitKey(0)
-
-cv.destroyAllWindows()
-```
+    cv.waitKey(0)
+    cv.destroyAllWindows()
+    ```
 
 运行结果：
 ![test_2_9_draw_rectangle](./doc_image/test_2_9_draw_rectangle.png)
 
 (5) 绘制圆形
 
-- 绘制圆形需要确定圆心点的位置和半径
+- 绘制圆形需要确定圆心点的坐标以及圆的半径
 - 代码演示：(test_2_10_draw_circle.py)
 代码：
 
@@ -1455,6 +1453,11 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
 - 学习函数：cv.Canny()
 
 (2) 理论
+
+- Canny 边缘检测是一个流行的边缘检测算法。
+  - 这是一个多阶段的算法，我们将经历每个阶段。
+  - 削弱噪音
+  - 
 
   
 
