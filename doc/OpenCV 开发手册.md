@@ -806,17 +806,29 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
 (1) 目标
 
 - 学习怎样从一个色彩空间转换到另一个色彩空间，向从 BGR $\leftrightarrow$ RGB , BGR $\leftrightarrow$ HSV 等。
-- 创建一个应用程序提取视频中的彩色对象。
+- 编写一个应用程序用来提取视频中的彩色对象。
 - 学习函数：cv.cvtColor(), cv.inRange() 等。
 
 (2) 改变色彩空间
 
-- 在 OpenCV 中，有超过 150 多种色彩空间转变的方法。但是，我们今天只讲两种最常用的色彩空间转换，BGR $\leftrightarrow$ Gray , BGR $\leftrightarrow$ HSV 。
-- 对于色彩空间转换，我们使用  cv.cvtColor(input_image, flag) 函数。其中 flag 决定转换的类型。从 BGR $\rightarrow$ Gray 的 flag 是 cv.COLOR_BGR2GRAY ，从 BGR $\rightarrow$ HSV 的 flag 是  cv.COLOR_BGR2HSV 。
+- 在 OpenCV 中，超过 150 多种色彩空间可以相互转换。但是，我们今天只讲两种最常用的色彩空间转换，BGR $\leftrightarrow$ Gray , BGR $\leftrightarrow$ HSV 。
+- 对于色彩空间转换，我们使用  cv.cvtColor(input_image, flag) 函数。其中 flag 决定转换的类型。
+- 我们可以通过以下方式来查看所有的 flag ：
+  
+    ```python
+    >>> import cv2 as cv
+    >>> flag = [i for i in dir(cv) if i.startswith("COLOR_")]
+    >>> print(flag)
+    ```
+
+- 运行结果:
+    ![color_change_flag](./doc_image/color_change_flag.png)
+
+- 从 BGR $\rightarrow$ Gray 转换的 flag 是 cv.COLOR_BGR2GRAY ，从 BGR $\rightarrow$ HSV 转换的 flag 是  cv.COLOR_BGR2HSV 。
 
 (3) 目标跟踪
 
-- 在学会 BGR $\rightarrow$ HSV 后，我们就可以使用它去提取色彩目标。在 HSV 中，比在 BGR 确定颜色更容易。在我们的应用程序中，我们将会去捕捉蓝色目标。
+- 在学会 BGR $\rightarrow$ HSV 后，我们就可以使用它去提取色彩目标。相较于BGR，HSV 确定颜色会更容易。在此次的应用程序中，我们将会去捕捉蓝色目标。
 - 应用程序方法步骤：
     1. 提取视频的每一帧
     2. 从 BGR 色彩空间转换到 HSV 色彩空间
@@ -828,7 +840,7 @@ dst = \alpha \cdot img1 + \beta \cdot img2 + \gamma
     ```python
     import cv2 as cv
     import numpy as np
-
+    # 打开摄像头
     cap = cv.VideoCapture(0)
 
     while(1):

@@ -12,6 +12,7 @@
 import cv2 as cv
 import numpy as np
 
+# 打开摄像头
 cap = cv.VideoCapture(0)
 
 while(1):

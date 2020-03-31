@@ -10,9 +10,11 @@
 '''
 
 import cv2 as cv
+import time
 
 # 获取运行前的时间戳
 start_tick = cv.getTickCount()
+start = time.clock()
 
 # 从 0 加到 1000
 y = 0
@@ -21,9 +23,11 @@ for i in range(1001):
 
 # 获取运行后的时间戳
 end_tick = cv.getTickCount()
+end = time.clock()
 
 # 打印 CPU 频率
 print("TickFrequency :", cv.getTickFrequency())
 
 # 获取从 0 加到 1000 所用的时间
 print((end_tick - start_tick)/cv.getTickFrequency())
+print("time is",end - start)
